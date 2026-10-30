@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="ckb" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#b53a74">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}</style>
+</head>
+<body>
+<title>چاودێری دایک</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@500;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: right-to-left Sorani Kurdish. One calm column card centred on the page (made for iPad), a progress bar on top, a fixed Emergency Call pill bottom-right. */
+:root{
+  --font-display:'Noto Naskh Arabic','Geeza Pro','Damascus','Times New Roman',serif;
+  --font-body:'Noto Sans Arabic','Geeza Pro','Arial',-apple-system,BlinkMacSystemFont,sans-serif;
+  --bg:#fbf4f7; --surface:#ffffff; --surface-2:#fdf8fb;
+  --ink:#2d1f3a; --muted:#66566f; --line:#e8d9e2; --line-strong:#c4adbd;
+  --accent:#b53a74; --accent-ink:#ffffff; --accent-soft:#f9e4ee; --accent-text:#9a2a60;
+  --calm:#2c7a70; --on-calm:#ffffff; --calm-soft:#dff2ee;
+  --warn:#9a5a00; --on-warn:#ffffff; --warn-soft:#fff0d3;
+  --danger:#d33351; --on-danger:#ffffff; --danger-soft:#fde4e8; --danger-text:#8f1228;
+  --shadow:0 12px 32px rgba(88,30,72,.12);
+  --overlay:rgba(30,12,38,.55);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#170f1d; --surface:#241a2e; --surface-2:#2b2036;
+    --ink:#f6ecf6; --muted:#bba9c7; --line:#3b2d49; --line-strong:#6a5580;
+    --accent:#f08ab9; --accent-ink:#2b0f20; --accent-soft:#3d2236; --accent-text:#f7a8cb;
+    --calm:#5cc2b3; --on-calm:#0d211e; --calm-soft:#1c3834;
+    --warn:#e0a040; --on-warn:#2b1a00; --warn-soft:#3b2d12;
+    --danger:#d33351; --on-danger:#ffffff; --danger-soft:#42151f; --danger-text:#ffb3c0;
+    --shadow:0 12px 32px rgba(0,0,0,.4);
+    --overlay:rgba(0,0,0,.65);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#170f1d; --surface:#241a2e; --surface-2:#2b2036;
+  --ink:#f6ecf6; --muted:#bba9c7; --line:#3b2d49; --line-strong:#6a5580;
+  --accent:#f08ab9; --accent-ink:#2b0f20; --accent-soft:#3d2236; --accent-text:#f7a8cb;
+  --calm:#5cc2b3; --on-calm:#0d211e; --calm-soft:#1c3834;
+  --warn:#e0a040; --on-warn:#2b1a00; --warn-soft:#3b2d12;
+  --danger:#d33351; --on-danger:#ffffff; --danger-soft:#42151f; --danger-text:#ffb3c0;
+  --shadow:0 12px 32px rgba(0,0,0,.4);
+  --overlay:rgba(0,0,0,.65);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  direction:rtl;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(800px 460px at 0% -8%, var(--accent-soft), transparent 65%),
+    radial-gradient(700px 480px at 110% 8%, var(--calm-soft), transparent 65%);
+  background-repeat:no-repeat;
+  color:var(--ink);
+  font:400 19px/1.8 var(--font-body);
+  padding-block:20px 120px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  min-height:100%;
+}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;line-height:1.5;text-wrap:balance;margin:0}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+
+.shell{max-width:760px;margin:0 auto;display:grid;gap:18px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:26px;color:var(--accent-text)}
+.brand svg{width:38px;height:38px;color:var(--accent)}
+.badge{font-size:14px;font-weight:700;border:1.5px solid var(--line-strong);color:var(--muted);padding:3px 14px;border-radius:999px}
+.prog{display:grid;gap:8px}
+.prog-meta{display:flex;justify-content:space-between;gap:12px;font-size:16px;color:var(--muted);font-weight:600}
+.track{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar{height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .35s ease}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:32px;box-shadow:var(--shadow);display:grid;gap:26px;min-width:0}
+.card h1{font-size:36px;color:var(--ink)}
+.lede{color:var(--muted);font-size:19px;max-width:60ch}
+.head{display:grid;gap:10px}
+.head h1:focus{outline:none}
+
+.form{display:grid;gap:30px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px}
+.two>*{min-width:0}
+.field{display:grid;gap:10px;align-content:start;min-width:0}
+.lbl{font-weight:600;font-size:19px;line-height:1.6}
+.opt{font-weight:500;font-size:15px;color:var(--muted);margin-inline-start:8px}
+.hint{color:var(--muted);font-size:16px}
+.cond{display:grid;gap:26px}
+
+.inwrap{position:relative}
+input[type=text],input[type=number],input[type=date],select,textarea{
+  width:100%;min-height:54px;padding:12px 16px;border-radius:14px;
+  border:1.5px solid var(--line-strong);background:var(--surface-2);font-size:18px;
+}
+textarea{min-height:110px;resize:vertical}
+.inwrap .unit{position:absolute;left:16px;inset-inline-end:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-weight:600;pointer-events:none}
+.inwrap input[type=number]{padding-inline-end:64px;padding-right:64px;-moz-appearance:textfield;appearance:textfield}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+select{appearance:auto}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.pills{display:flex;flex-wrap:wrap;gap:10px}
+.pill{position:relative;cursor:pointer}
+.pill input{position:absolute;top:0;right:0;bottom:0;left:0;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.pill span{display:flex;align-items:center;justify-content:center;min-height:52px;padding:8px 22px;border-radius:999px;border:1.5px solid var(--line-strong);background:var(--surface-2);font-weight:600;line-height:1.5;text-align:center;transition:background .15s,border-color .15s}
+.pill input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pill.chk input:checked+span::before{content:"\2713\00a0"}
+.pill input:focus-visible+span{outline:3px solid var(--accent);outline-offset:3px}
+
+.field.row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 20px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.field.row .lbl{flex:1 1 300px}
+.field.row .msg{flex-basis:100%}
+.list{display:grid;gap:22px}
+
+.msg{color:var(--danger-text);font-weight:600;font-size:16px}
+.msg:empty{display:none}
+.field.err .lbl{color:var(--danger-text)}
+.field.err input[type=text],.field.err input[type=number],.field.err input[type=date],.field.err select,.field.err textarea{border-color:var(--danger)}
+.field.err .pill span{border-color:var(--danger)}
+
+.note{display:flex;gap:14px;align-items:flex-start;padding:18px 20px;border-radius:20px;background:var(--accent-soft);--ic:var(--accent);--on-ic:var(--accent-ink)}
+.note>div{display:grid;gap:8px;min-width:0}
+.note strong{font-weight:700}
+.note .ic{flex:none;width:30px;height:30px;border-radius:50%;background:var(--ic);color:var(--on-ic);display:grid;place-items:center;font-weight:800;font-size:16px;margin-top:4px;line-height:1}
+.note .ic::before{content:"i"}
+.note.good{background:var(--calm-soft);--ic:var(--calm);--on-ic:var(--on-calm)}
+.note.good .ic::before{content:"\2713"}
+.note.warn{background:var(--warn-soft);--ic:var(--warn);--on-ic:var(--on-warn)}
+.note.warn .ic::before,.note.urgent .ic::before{content:"!"}
+.note.urgent{background:var(--danger-soft);--ic:var(--danger);--on-ic:var(--on-danger)}
+.note ul{margin:0;padding-inline-start:22px;display:grid;gap:4px}
+.note p+p{margin-top:2px}
+
+.nav{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:6px}
+.btn{min-height:54px;padding:8px 30px;border-radius:999px;border:1.5px solid transparent;font-weight:700;font-size:18px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;border-color:var(--line-strong);color:var(--ink)}
+.btn.danger{background:var(--danger);color:var(--on-danger)}
+.btn:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.nav .primary{margin-inline-start:auto}
+
+/* welcome */
+.hero{display:grid;gap:20px}
+.hero svg.bloom{width:84px;height:84px;color:var(--accent)}
+.hero h1{font-size:44px}
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.paths div{background:var(--surface-2);border:1px solid var(--line);border-radius:20px;padding:18px;display:grid;gap:4px;align-content:start}
+.paths b{font-family:var(--font-display);font-weight:700;font-size:21px}
+.paths span{color:var(--muted);font-size:17px}
+.privacy{color:var(--muted);font-size:16px}
+
+.estimate{background:var(--calm-soft);border-radius:20px;padding:16px 20px}
+
+/* summary */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tile{background:var(--accent-soft);border-radius:20px;padding:16px;display:grid;gap:4px;align-content:start}
+.tile b{font-family:var(--font-display);font-weight:700;font-size:25px;line-height:1.5}
+.tile span{font-size:15px;font-weight:700;color:var(--muted)}
+.tile small{color:var(--muted);font-size:15px;line-height:1.6}
+.stack{display:grid;gap:14px}
+.sec-title{font-size:25px}
+details.answers{border:1px solid var(--line);border-radius:20px;padding:6px 20px}
+details.answers summary{cursor:pointer;font-weight:700;min-height:48px;display:flex;align-items:center}
+details.answers dl{display:grid;gap:0;margin:0 0 12px}
+details.answers .r{display:grid;grid-template-columns:minmax(120px,40%) 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+details.answers dt{color:var(--muted);font-size:17px}
+details.answers dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.fine{color:var(--muted);font-size:16px}
+
+/* emergency */
+.sos{position:fixed;z-index:50;right:calc(max(16px, env(safe-area-inset-right, 0px)));bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+  display:flex;align-items:center;gap:10px;min-height:58px;padding:0 18px 0 24px;border:0;border-radius:999px;direction:rtl;
+  background:var(--danger);color:var(--on-danger);font-weight:700;font-size:18px;cursor:pointer;
+  box-shadow:0 10px 26px rgba(160,20,45,.45)}
+.sos svg{width:26px;height:26px;fill:currentColor;flex:none}
+.sos:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+.overlay{position:fixed;top:0;right:0;bottom:0;left:0;inset:0;z-index:100;background:var(--overlay);display:flex;align-items:center;justify-content:center;direction:rtl;
+  padding:max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))}
+.modal{background:var(--surface);border-radius:28px;max-width:540px;width:100%;max-height:100%;overflow:auto;padding:30px;display:grid;gap:18px;box-shadow:var(--shadow)}
+.modal h2{font-size:30px}
+.modal ul{margin:0;padding-inline-start:22px;display:grid;gap:6px}
+.modal .heart{width:56px;height:56px;fill:var(--accent)}
+.bignum{font-family:var(--font-body);font-weight:700;font-size:64px;line-height:1.2;color:var(--danger-text);user-select:all;-webkit-user-select:all;direction:ltr;text-align:center}
+.modal .actions{display:flex;flex-wrap:wrap;gap:10px}
+
+@media (max-width:560px){
+  body{font-size:18px}
+  .card{padding:22px 18px;border-radius:24px}
+  .card h1{font-size:30px}
+  .hero h1{font-size:34px}
+  .btn{padding-inline:22px}
+  .nav .btn{flex:1 1 140px}
+  details.answers .r{grid-template-columns:1fr;gap:2px}
+  .sos{padding:0 14px 0 18px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<div class="shell">
+  <header class="top">
+    <div class="brand">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><g fill="currentColor"><ellipse cx="24" cy="12" rx="6" ry="10" opacity=".5"/><ellipse cx="24" cy="12" rx="6" ry="10" opacity=".5" transform="rotate(72 24 24)"/><ellipse cx="24" cy="12" rx="6" ry="10" opacity=".5" transform="rotate(144 24 24)"/><ellipse cx="24" cy="12" rx="6" ry="10" opacity=".5" transform="rotate(216 24 24)"/><ellipse cx="24" cy="12" rx="6" ry="10" opacity=".5" transform="rotate(288 24 24)"/><circle cx="24" cy="24" r="5.5"/></g></svg>
+      چاودێری دایک
+    </div>
+    <span class="badge">وەشانی تاقیکردنەوە</span>
+  </header>
+  <div class="prog" id="prog" hidden>
+    <div class="prog-meta"><span id="progStep"></span><span id="progName"></span></div>
+    <div class="track"><div class="bar" id="bar"></div></div>
+  </div>
+  <main id="stage">
+    <section class="card" id="boot">
+      <h2>جارێ بارکردن…</h2>
+      <p class="lede">ئەگەر ئەم نووسینە بۆ زیاتر لە چەند چرکەیەک ماوەتەوە و هیچ شتێکی تر نەهات، سەیرکەری ئامێرەکەت کۆدی ئەم لاپەڕەیەی کار پێنەکردووە. تکایە وێنەی شاشەکە بنێرە.</p>
+    </section>
+  </main>
+  <noscript><section class="card"><h2>JavaScript کار ناکات</h2><p class="lede">ئەم لاپەڕەیە پێویستی بە JavaScript هەیە. تکایە لە ڕێکخستنەکانی سەیرکەرەکەت چالاکی بکە.</p></section></noscript>
+  <div id="errbox" class="card" hidden style="border-color:var(--danger);background:var(--danger-soft);color:var(--danger-text)"></div>
+</div>
+
+<button class="sos" type="button" data-act="sos" aria-haspopup="dialog">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+  پەیوەندیی بەپەلە
+</button>
+<div id="modal" class="overlay" hidden></div>
+
+<script>
+window.addEventListener('error', function(e){
+  var b = document.getElementById('errbox'); if (!b) return;
+  b.hidden = false;
+  b.innerHTML = '<h2>هەڵەیەک ڕوویدا</h2><p dir="ltr" style="text-align:left;font-size:15px;overflow-wrap:anywhere">' + String(e.message || e.error || 'unknown error').replace(/</g, '&lt;') + ' (line ' + (e.lineno || '?') + ')</p><p class="lede">تکایە وێنەی ئەم شاشەیە بنێرە.</p>';
+});
+</script>
+<script>
+(function(){
+'use strict';
+
+document.documentElement.setAttribute('lang', 'ckb');
+document.documentElement.setAttribute('dir', 'rtl');
+
+/* Change this to the emergency number for your country or hospital. */
+var EMERGENCY_NUMBER = '122';
+
+var S = {};
+var cur = 'welcome';
+var stage = document.getElementById('stage');
+var modal = document.getElementById('modal');
+
+/* ---------- small helpers ---------- */
+var MONTHS = ['کانوونی دووەم','شوبات','ئازار','نیسان','ئایار','حوزەیران','تەمموز','ئاب','ئەیلوول','تشرینی یەکەم','تشرینی دووەم','کانوونی یەکەم'];
+var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+var today = function(){ var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); };
+var parseD = function(s){ var a = s.split('-').map(Number); return new Date(a[0], a[1]-1, a[2]); };
+var addDays = function(d, n){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()+n); };
+var diffDays = function(a, b){ return Math.round((b - a) / 864e5); };
+var iso = function(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
+var fmtD = function(d){ return d.getDate() + ' ' + MONTHS[d.getMonth()] + ' ' + d.getFullYear(); };
+var num = function(k){ return parseFloat(S[k]); };
+var yes = function(k){ return S[k] === 'yes'; };
+var yn = function(k){ return S[k] === 'yes' ? 'بەڵێ' : S[k] === 'no' ? 'نەخێر' : ''; };
+var list = function(a){ return a.length < 2 ? a.join('') : a.slice(0,-1).join('، ') + ' و ' + a[a.length-1]; };
+var p = function(t){ return '<p>' + t + '</p>'; };
+var rng = function(a, b, f){ var o = []; for (var i = a; i <= b; i++) o.push([String(i), f ? f(i) : String(i)]); return o; };
+var YN = [['yes','بەڵێ'],['no','نەخێر']];
+var REQ_MSG = 'تکایە ئەم پرسیارە وەڵام بدەرەوە.';
+
+/* ---------- field builders ---------- */
+function msgEl(){ return '<p class="msg" role="alert"></p>'; }
+function fText(k, label, o){
+  o = o || {};
+  var type = o.type || 'text';
+  var extra = type === 'number' ? 'step="any" inputmode="decimal"' : '';
+  return '<div class="field" data-field="' + k + '"' + (o.opt ? '' : ' data-req') + '>' +
+    '<label class="lbl" for="' + k + '">' + label + (o.opt ? '<span class="opt">ئارەزوومەندانە</span>' : '') + '</label>' +
+    (o.hint ? '<p class="hint">' + o.hint + '</p>' : '') +
+    '<div class="inwrap"><input id="' + k + '" data-k="' + k + '" type="' + type + '" value="' + esc(S[k]) + '" placeholder="' + esc(o.ph || '') + '" ' + (o.attrs || '') + ' ' + extra + '>' +
+    (o.unit ? '<span class="unit">' + o.unit + '</span>' : '') + '</div>' + msgEl() + '</div>';
+}
+function fArea(k, label, o){
+  o = o || {};
+  return '<div class="field" data-field="' + k + '"' + (o.opt ? '' : ' data-req') + '>' +
+    '<label class="lbl" for="' + k + '">' + label + (o.opt ? '<span class="opt">ئارەزوومەندانە</span>' : '') + '</label>' +
+    (o.hint ? '<p class="hint">' + o.hint + '</p>' : '') +
+    '<textarea id="' + k + '" data-k="' + k + '" placeholder="' + esc(o.ph || '') + '">' + esc(S[k]) + '</textarea>' + msgEl() + '</div>';
+}
+function fSelect(k, label, opts, o){
+  o = o || {};
+  return '<div class="field" data-field="' + k + '"' + (o.opt ? '' : ' data-req') + '>' +
+    '<label class="lbl" for="' + k + '">' + label + '</label>' +
+    (o.hint ? '<p class="hint">' + o.hint + '</p>' : '') +
+    '<select id="' + k + '" data-k="' + k + '"><option value="" disabled' + (S[k] ? '' : ' selected') + '>' + (o.ph || 'هەڵبژێرە…') + '</option>' +
+    opts.map(function(x){ return '<option value="' + x[0] + '"' + (S[k] === x[0] ? ' selected' : '') + '>' + x[1] + '</option>'; }).join('') +
+    '</select>' + msgEl() + '</div>';
+}
+function fChoice(k, label, opts, o){
+  o = o || {};
+  return '<div class="field' + (o.row ? ' row' : '') + '" data-field="' + k + '" data-req role="radiogroup" aria-labelledby="l_' + k + '">' +
+    '<div class="lbl" id="l_' + k + '">' + label + '</div>' +
+    (o.hint ? '<p class="hint" style="flex-basis:100%">' + o.hint + '</p>' : '') +
+    '<div class="pills">' + opts.map(function(x){
+      return '<label class="pill"><input type="radio" name="' + k + '" value="' + x[0] + '" data-k="' + k + '"' + (S[k] === x[0] ? ' checked' : '') + '><span>' + x[1] + '</span></label>';
+    }).join('') + '</div>' + msgEl() + '</div>';
+}
+function fYN(k, label, o){ return fChoice(k, label, YN, o); }
+function fMulti(k, label, opts, o){
+  o = o || {};
+  var cur_ = S[k] || [];
+  return '<div class="field" data-field="' + k + '"' + (o.req ? ' data-req' : '') + ' role="group" aria-labelledby="l_' + k + '">' +
+    '<div class="lbl" id="l_' + k + '">' + label + (o.req ? '' : '<span class="opt">ئارەزوومەندانە</span>') + '</div>' +
+    (o.hint ? '<p class="hint">' + o.hint + '</p>' : '') +
+    '<div class="pills">' + opts.map(function(x){
+      return '<label class="pill chk"><input type="checkbox" value="' + x[0] + '" data-k="' + k + '"' + (x[2] ? ' data-excl="1"' : '') + (cur_.indexOf(x[0]) > -1 ? ' checked' : '') + '><span>' + x[1] + '</span></label>';
+    }).join('') + '</div>' + msgEl() + '</div>';
+}
+function cond(expr, inner){ return '<div class="cond" data-if="' + expr + '">' + inner + '</div>'; }
+function note(kind, title, body){ return '<div class="note ' + kind + '"><span class="ic" aria-hidden="true"></span><div><strong>' + title + '</strong>' + body + '</div></div>'; }
+
+function parityNote(example){
+  return note('info', 'چۆن بژمێریت',
+    p('<b>گراڤیدا (Gravida)</b> ئەو ژمارەیەیە کە چەند جار سکپڕ بوویت، لەگەڵ هەر سکپڕبوونێک کە بە لەبارچوون یان لەدەستدان کۆتایی هاتبێت' + (example === 'now' ? '، ئەم سکپڕبوونەشەوە.' : '.')) +
+    p('<b>پارا (Para)</b> ئەو ژمارەیەیە کە چەند سکپڕبوونت بە لەدایکبوون کۆتایی هاتووە (منداڵێک لە نزیکەی هەفتەی 24 بەدواوە لەدایک بووبێت). ئەو سکپڕبوونانەی زووتر لەدەست چوون لە گراڤیدا دەژمێردرێن، بەڵام لە پارادا نا.') +
+    p(example === 'now'
+      ? 'نموونە: ئەمە سکپڕبوونی سێیەمتە، و پێشتر منداڵێکت هەیە و یەک جار لەبارچوویت. گراڤیدا 3، پارا 1.'
+      : 'نموونە: دوو جار سکپڕ بوویت، یەکێکیان بە منداڵ و ئەوی تر بە لەبارچوون کۆتایی هاتووە. گراڤیدا 2، پارا 1.'));
+}
+var COUNT = function(n){ return n === 15 ? '15 یان زیاتر' : String(n); };
+
+/* ---------- gestational age ---------- */
+function gaInfo(){
+  var days = null, src = null;
+  if (S.ultra === 'yes' && S.ultraConf === 'yes' && S.gaWeeks){ days = +S.gaWeeks * 7; src = 'ultrasound'; }
+  else if (S.lmp){ var d = diffDays(parseD(S.lmp), today()); if (d >= 0){ days = d; src = 'lmp'; } }
+  if (days == null) return null;
+  return { days: days, w: Math.floor(days/7), d: days % 7, src: src, edd: addDays(today(), 280 - days), tri: days < 98 ? 1 : days < 196 ? 2 : 3 };
+}
+function gaText(){
+  var g = gaInfo();
+  if (!g) return p('یەکەم ڕۆژی دوایین سووڕی مانگانەت لە لاپەڕەی یەکەم زیاد بکە، ئێمە هەفتەکانت بۆ مەزەندە دەکەین.');
+  if (g.src === 'ultrasound') return p('سۆنارەکەت بەکاردەهێنین: <b>' + g.w + ' هەفتە</b>. بەرواری مەزەندەکراوی منداڵبوون: <b>' + fmtD(g.edd) + '</b>.');
+  return p('لە سووڕی مانگانەکەتەوە مەزەندە دەکەین: نزیکەی <b>' + g.w + ' هەفتە و ' + g.d + ' ڕۆژ</b>. بەرواری مەزەندەکراوی منداڵبوون: <b>' + fmtD(g.edd) + '</b>. سۆنار مەزەندەکە وردتر دەکات.');
+}
+
+/* ---------- steps ---------- */
+var TOPICS = [
+  ['nutrition','خواردن و تێرخۆراکی','سەوزە، میوە، دانەوێڵەی تەواو و پرۆتین زۆر بخۆ، و خۆراکی دەوڵەمەند بە ئاسن وەک نیسک، فاسۆلیا و گۆشت لە خواردنەکەتدا بێت. کافایین لە نزیکەی 200 ملگم لە ڕۆژێکدا زیاتر نەبێت، کە نزیکەی دوو فنجان قاوەیە.'],
+  ['exercise','وەرزش','ئامانج بکە بۆ نزیکەی 150 خولەک چالاکیی مامناوەند لە هەفتەیەکدا، وەک پیاسەی خێرا. یارمەتیدەرە بۆ وزە، باری دەروونی و خەو، و زۆرجار دوای سکپڕبوونیش دەتوانرێت بەردەوام بیت.'],
+  ['fertility','توانای منداڵبوون و هێلکەکردن','هێلکەکردن (ئۆڤیولەیشن) زۆربەی جار نزیکەی 14 ڕۆژ پێش سووڕی مانگانەی داهاتوو ڕوودەدات. جووتبوون هەموو ڕۆژێک یان دوو ڕۆژ جارێک لەو ڕۆژانەی پێش ئەوە باشترین هەلە. زۆربەی هاوسەرە تەندروستەکان لە ماوەی ساڵێکدا سکپڕ دەبن.'],
+  ['vitamins','ڤیتامینەکان','ئەسیدی فۆلیک گرنگترینیانە. پزیشکەکەت دەتوانێت پێت بڵێت ئایا پێویستت بە ڤیتامین D یان ئاسنیش هەیە.'],
+  ['checkup','پشکنینی پێش سکپڕبوون','سەردانێک پێش ئەوەی دەست بە هەوڵدان بکەیت وا دەکات پزیشکەکەت پێداچوونەوە بە نەخۆشییە درێژخایەنەکان، دەرمانەکان، کوتانەکان وەک ڕووبێلا، و دۆزی ئەسیدی فۆلیکەکەت بکات.'],
+  ['tests','پشکنینی سکپڕبوون','پشکنینی ماڵەوە لە یەکەم ڕۆژی دواکەوتنی سووڕی مانگانەوە باشترین دەرئەنجام دەدات. ئەگەر نەرێنی بوو و سووڕەکەت هێشتا نەهات، دوای چەند ڕۆژێک دووبارە تاقی بکەرەوە.'],
+  ['mind','تەندروستیی دەروونی','هەستکردن بە تێکەڵەیەک لە خۆشی و نیگەرانی ئاساییە. لەگەڵ کەسێک کە متمانەت پێیەتی قسەی لەسەر بکە، و ئەگەر نیگەرانی یان خەمۆکی زاڵ بوو بە پزیشکەکەتی بڵێ.'],
+  ['pcos','PCOS و ئێندۆمیتریۆزیس','ئەمانە دەکرێت سکپڕبوون درەنگتر بکەن، بەڵام زۆر ژن کە ئەم نەخۆشییانەیان هەیە سکپڕبوونی تەندروستیان هەبووە. پزیشکەکەت دەتوانێت پێش هەوڵدان چارەسەر لەگەڵت پلان دابنێت.']
+];
+var SYMP = [
+  ['sNausea','ئایا دڵتێکەڵان یان ڕشانەوەت هەیە؟'],
+  ['sDigest','ئایا کێشەت هەیە لە هەرسکردنی خواردن؟'],
+  ['sHeadVis','ئایا سەرئێشە یان لێڵبوونی بینینت هەیە؟'],
+  ['sSwell','ئایا ئاوسانی ڕووخسار یان دەستەکانتت بەدی کردووە؟'],
+  ['sAbd','ئایا ئێشی سکت هەیە؟'],
+  ['sVag','ئایا خوێنبەربوون، دەرچوونی ئاو یان شلەمەنییەکی نائاسایی لە زێ هەیە؟'],
+  ['sFever','ئایا تات هەیە؟'],
+  ['sBurn','ئایا لە کاتی میزکردندا هەست بە سووتانەوە دەکەیت؟'],
+  ['sChest','ئایا ئێشی سنگ، قورسی هەناسەدان یان بێهۆشبوونت هەیە؟']
+];
+
+var STEPS = {
+  welcome: { name: '' },
+
+  personal: {
+    name: 'دەربارەی تۆ', title: 'دەربارەی تۆ', lede: 'با بە زانیارییە سەرەتاییەکان دەست پێبکەین. کاتی خۆت بگرە، هیچ وەڵامێکی هەڵە نییە.',
+    html: function(){
+      return '<div class="form">' +
+        fText('name', 'ناوت چییە؟', { ph: 'ناوی یەکەمت', attrs: 'autocomplete="given-name"' }) +
+        '<div class="two">' +
+          fText('age', 'تەمەنت چەندە؟', { type: 'number', unit: 'ساڵ', attrs: 'inputmode="numeric" step="1"' }) +
+          fText('from', 'خەڵکی کوێیت؟', { ph: 'شار، وڵات' }) +
+        '</div>' +
+        fText('height', 'باڵات چەندە؟', { type: 'number', unit: 'سم', ph: 'بۆ نموونە 165' }) +
+        fChoice('status', 'لە چ قۆناغێکی گەشتەکەتدایت؟', [['pregnant','سکپڕم'],['planning','پلانم هەیە سکپڕ بم'],['newborn','منداڵێکی تازە لەدایکبووم هەیە']]) +
+        '<div class="two">' +
+          cond('status=pregnant|newborn', fText('wPre', 'کێشت پێش سکپڕبوون', { type: 'number', unit: 'کگم' })) +
+          fText('wNow', 'کێشی ئێستات', { type: 'number', unit: 'کگم' }) +
+        '</div>' +
+        cond('status=pregnant', fText('lmp', 'یەکەم ڕۆژی دوایین سووڕی مانگانەت کەی بوو؟', { type: 'date', attrs: 'max="' + iso(today()) + '"', hint: 'باشترین مەزەندەت بەسە. بەکاری دەهێنین بۆ ئەوەی بزانین چەند هەفتەی سکپڕیت.' })) +
+        fYN('smoke', 'ئایا جگەرە دەکێشیت؟') +
+        fYN('alcohol', 'ئایا ئەلکوحول دەخۆیتەوە؟') +
+        fYN('drugs', 'ئایا ماددەی هۆشبەر یان هەر ماددەیەکی تر بەکاردەهێنیت کە پزیشک بۆی نەنووسیویت؟', { hint: 'وەڵامەکەت نهێنییە. تەنها بۆ ئەوەیە پشتگیریی دروست وەربگریت، هەرگیز بۆ ڕەخنەگرتن لێت نییە.' }) +
+      '</div>';
+    },
+    check: function(){
+      var r = [], a = num('age'), h = num('height'), w = num('wNow');
+      if (S.age && !(a >= 10 && a <= 60)) r.push(['age', 'تکایە تەمەنێک لە نێوان 10 و 60 بنووسە.']);
+      if (S.height && !(h >= 100 && h <= 230)) r.push(['height', 'تکایە باڵات بە سانتیمەتر بنووسە، بۆ نموونە 165.']);
+      if (S.wNow && !(w >= 30 && w <= 250)) r.push(['wNow', 'تکایە کێشت بە کیلۆگرام بنووسە، بۆ نموونە 68.']);
+      if (S.status !== 'planning' && S.wPre && !(num('wPre') >= 30 && num('wPre') <= 250)) r.push(['wPre', 'تکایە کێشت بە کیلۆگرام بنووسە، بۆ نموونە 62.']);
+      if (S.status === 'pregnant' && S.lmp){
+        var d = diffDays(parseD(S.lmp), today());
+        if (d < 0) r.push(['lmp', 'ئەو بەروارە لە داهاتووە. تکایە پشکنینی بکە.']);
+        else if (d > 300) r.push(['lmp', 'ئەمە زیاترە لە 42 هەفتە لەمەوبەر. تکایە بەروارەکە پشکنینی بکە.']);
+      }
+      return r;
+    }
+  },
+
+  preg: {
+    name: 'سکپڕبوونەکەت', title: 'سکپڕبوونەکەت', lede: 'چەند وردەکارییەک دەربارەی ئەم سکپڕبوونە.',
+    html: function(){
+      return '<div class="form">' +
+        fYN('ultra', 'ئایا لەم سکپڕبوونەدا سۆنارت کردووە؟') +
+        cond('ultra=yes', fYN('ultraConf', 'ئایا سۆنارەکە دووپاتی کردەوە کە چەند هەفتەی سکپڕیت؟')) +
+        cond('ultra=yes&ultraConf=yes', fSelect('gaWeeks', 'چەند هەفتەی گوت؟', rng(4, 42, function(n){ return n + ' هەفتە'; }))) +
+        cond('ultra=yes|no', '<div class="estimate" data-live="ga" aria-live="polite"></div>') +
+        fChoice('plural', 'ئایا تاکە منداڵە، دووانەیە یان سێانە؟', [['single','تاکە منداڵ'],['twins','دووانە'],['triplets','سێانە'],['unsure','هێشتا دڵنیا نیم']]) +
+      '</div>';
+    }
+  },
+
+  obs: {
+    name: 'مێژووی سکپڕبوون', title: 'مێژووی سکپڕبوون', lede: 'چەند جار سکپڕ بوویت، ئەم جارەشەوە؟',
+    html: function(){
+      return '<div class="form">' + parityNote('now') +
+        '<div class="two">' +
+          fSelect('gravida', 'گراڤیدا: کۆی سکپڕبوونەکان', rng(1, 15, COUNT), { hint: 'ئەم سکپڕبوونەشەوە.' }) +
+          fSelect('para', 'پارا: ژمارەی لەدایکبوونەکان', rng(0, 14, COUNT), { hint: 'ئەم جارە ناژمێردرێت. ئەگەر یەکەم سکپڕبوونتە 0 هەڵبژێرە.' }) +
+        '</div></div>';
+    },
+    check: function(){
+      if (S.gravida && S.para && +S.para > +S.gravida - 1) return [['para', 'پارا ناتوانێت لە سکپڕبوونە پێشووەکانت زیاتر بێت. ئەم سکپڕبوونە هێشتا کۆتایی نەهاتووە، بۆیە پارا لانی زۆر یەک کەمترە لە گراڤیدا.']];
+      return [];
+    }
+  },
+
+  medhist: {
+    name: 'مێژووی پزیشکی', title: 'مێژووی پزیشکی', lede: 'تەندروستیت پێش و لە کاتی سکپڕبووندا یارمەتیی تیمی چاودێری دەدات بۆ ئەوەی باشتر چاودێریت بکەن.',
+    html: function(){
+      return '<div class="form">' +
+        fYN('diabetes', 'ئایا نەخۆشیی شەکرەت هەیە؟') +
+        cond('diabetes=yes', fSelect('diabetesType', 'کام جۆر؟', [['t1','جۆری 1'],['t2','جۆری 2'],['gdm','لە کاتی ئەم سکپڕبوونەدا دەستی پێکرد (شەکرەی سکپڕی)'],['unsure','دڵنیا نیم']])) +
+        fYN('bp', 'ئایا بەرزبوونەوەی پەستانی خوێنت هەیە؟') +
+        cond('bp=yes', fSelect('bpWhen', 'کەی دەستی پێکرد؟', [['before','پێش ئەم سکپڕبوونە'],['during','لە کاتی ئەم سکپڕبوونەدا'],['unsure','دڵنیا نیم']])) +
+        fYN('thyroid', 'ئایا نەخۆشیی گلاندی دەرەقی (تایرۆید)ت هەیە؟') +
+        fYN('heart', 'ئایا نەخۆشیی دڵت هەیە؟') +
+        fYN('allergy', 'ئایا هیچ هەستیاری (ئالەرجی)یەکت هەیە؟') +
+        cond('allergy=yes', fText('allergyWhat', 'هەستیاریت بۆ چییە؟', { ph: 'دەرمان، خواردن، لاتێکس…' })) +
+        fYN('meds', 'ئایا ئێستا هیچ دەرمان یان ماددەیەک بەکاردەهێنیت؟') +
+        cond('meds=yes', fText('medsWhat', 'کامانە؟ ڤیتامین و گیای دەرمانیش بنووسە.', { ph: 'ناو و برەکەی، ئەگەر دەیزانیت' })) +
+        fArea('otherChronic', 'ئایا هیچ نەخۆشییەکی درێژخایەنی (مزمن)ی تری هەیە؟', { opt: true, ph: 'هەر شتێکی تر بنووسە کە پزیشکەکەت پێویستە بیزانێت، بۆ نموونە تەنگەنەفەسی، سەرع، نەخۆشیی گورچیلە یان جگەر.' }) +
+      '</div>';
+    }
+  },
+
+  symptoms: {
+    name: 'نیشانە و هێمای مەترسی', title: 'نیشانەکانی سکپڕبوون و هێمای مەترسی', lede: 'پێمان بڵێ ئێستا هەستت چۆنە. هەندێکیان ئاساییە و هەندێکیان پێویستیان بە ئاگاداریی بەپەلە هەیە.',
+    html: function(){
+      var rows = SYMP.map(function(s){
+        var out = fYN(s[0], s[1], { row: true });
+        if (s[0] === 'sVag') out += cond('sVag=yes', fMulti('vagType', 'چی دەبینیت؟', [['bleed','خوێنبەربوون'],['leak','دەرچوونی ئاو'],['disch','شلەمەنی نائاسایی']], { req: true }));
+        return out;
+      }).join('');
+      return '<div class="form"><div class="list">' + rows + '</div></div>';
+    }
+  },
+
+  prior: {
+    name: 'مێژووی سکپڕبوون', title: 'مێژووی سکپڕبوون', lede: 'ئەمە یارمەتیی پزیشکەکەت دەدات پاشخانەکەت تێبگات.',
+    html: function(){
+      return '<div class="form">' +
+        fYN('prior', 'ئایا پێشتر سکپڕ بوویت؟') +
+        cond('prior=yes', parityNote('before') +
+          '<div class="two">' +
+            fSelect('gravida', 'گراڤیدا: کۆی سکپڕبوونەکان', rng(1, 15, COUNT)) +
+            fSelect('para', 'پارا: ژمارەی لەدایکبوونەکان', rng(0, 14, COUNT)) +
+          '</div>') +
+      '</div>';
+    },
+    check: function(){
+      if (S.prior === 'yes' && S.gravida && S.para && +S.para > +S.gravida) return [['para', 'پارا ناتوانێت لە گراڤیدا زیاتر بێت.']];
+      return [];
+    }
+  },
+
+  cycle: {
+    name: 'سووڕی مانگانەت', title: 'سووڕی مانگانەت', lede: 'سووڕی مانگانەت زۆر شت دەربارەی توانای منداڵبوونت دەڵێت.',
+    html: function(){
+      return '<div class="form">' +
+        fText('lmp', 'یەکەم ڕۆژی دوایین سووڕی مانگانەت کەی بوو؟', { type: 'date', opt: true, attrs: 'max="' + iso(today()) + '"', hint: 'ئەگەر لەبیرت نییە بەجێی بهێڵە.' }) +
+        fSelect('periodDays', 'سووڕی مانگانەت بە ئاسایی چەند ڕۆژ دەخایەنێت؟', rng(1, 14, function(n){ return n + ' ڕۆژ'; })) +
+        fYN('late', 'ئایا سووڕی مانگانەت جار جار دواکەوتووە یان ناڕێکە؟') +
+        fYN('painful', 'ئایا لە کاتی سووڕی مانگانەدا ئازارێکی سەختت هەیە؟') +
+        fChoice('dx', 'ئایا هەرگیز بە PCOS (کیستی هێلکەدان) یان ئێندۆمیتریۆزیس دەستنیشان کراوی؟', [['none','نەخێر'],['pcos','PCOS'],['endo','ئێندۆمیتریۆزیس'],['both','هەردووکیان']]) +
+        cond('dx=pcos|endo|both', fYN('dxMeds', 'ئایا بۆی دەرمان بەکاردەهێنیت؟')) +
+        cond('dx=pcos|endo|both&dxMeds=yes', fText('dxMedsWhat', 'کام دەرمان؟', { opt: true, ph: 'ناوەکەی، ئەگەر دەیزانیت' })) +
+      '</div>';
+    },
+    check: function(){
+      if (S.lmp){
+        var d = diffDays(parseD(S.lmp), today());
+        if (d < 0) return [['lmp', 'ئەو بەروارە لە داهاتووە. تکایە پشکنینی بکە.']];
+        if (d > 730) return [['lmp', 'ئەمە زیاترە لە دوو ساڵ لەمەوبەر. تکایە بەروارەکە پشکنینی بکە، یان بەتاڵی بهێڵەرەوە.']];
+      }
+      return [];
+    }
+  },
+
+  lifestyle: {
+    name: 'شێوازی ژیان', title: 'شێوازی ژیان', lede: 'عادەتە بچووکەکانی ڕۆژانە جیاوازییەکی گەورە دروست دەکەن.',
+    html: function(){
+      return '<div class="form">' +
+        note('info', 'ئەسیدی فۆلیک چییە؟',
+          p('ئەسیدی فۆلیک ڤیتامینی B9ـە. لە هەفتە سەرەتاییەکاندا، زۆرجار پێش ئەوەی بزانیت سکپڕیت، یارمەتیی پێکهاتنی مێشک و بڕبڕەی پشتی منداڵەکەت دەدات.') +
+          p('خواردنی <b>400 مایکرۆگرام (0.4 ملگم) هەموو ڕۆژێک</b>، لانیکەم مانگێک پێش هەوڵدان دەستپێبکات و تا هەفتەی 12ی سکپڕبوون بەردەوام بێت، مەترسیی کێشەکانی بوری دەمار (neural tube) وەک سپینا بیفیدا بە شێوەیەکی گەورە کەم دەکاتەوە.') +
+          p('هەندێک ژن پێویستیان بە دۆزێکی بەرزترە کە پزیشک بۆیان دەنووسێت، بۆ نموونە ئەوانەی شەکرەیان هەیە، دەرمانی سەرعیان بەکاردەهێنن، یان پێشتر منداڵێکیان بووە کە کێشەی بوری دەماری هەبووە.')) +
+        fYN('folic', 'ئایا ئەسیدی فۆلیک بەکاردەهێنیت؟') +
+        fChoice('active', 'ئایا چالاکی جەستەییت هەیە؟', [['no','نەخێر، زۆر نا'],['some','هەندێک جار (1 بۆ 2 ڕۆژ لە هەفتەدا)'],['yes','بەڵێ (3 ڕۆژ یان زیاتر لە هەفتەدا)']]) +
+        fSelect('sleep', 'ڕۆژانە چەند کاتژمێر دەنووی؟', rng(3, 12, function(n){ return n === 3 ? '3 کاتژمێر یان کەمتر' : n === 12 ? '12 کاتژمێر یان زیاتر' : n + ' کاتژمێر'; })) +
+        fChoice('ready', 'ئایا لە ڕووی هەستییەوە ئامادەیت بۆ سکپڕبوون؟', [['yes','بەڵێ'],['unsure','دڵنیا نیم'],['no','هێشتا نا']]) +
+        cond('ready=unsure|no', note('good', 'ئەمە بە تەواوی ئاساییە', p('هەستکردن بە دڵنیا نەبوون زۆر ئاساییە. هیچ کاتێکی دیاریکراو نییە، و دەتوانیت بە خێراییەکەی خۆت بڕۆیت.'))) +
+        fYN('support', 'ئایا پشتگیریی خێزان یان هاوسەرت هەیە؟') +
+      '</div>';
+    }
+  },
+
+  curious: {
+    name: 'پرسیارەکانت', title: 'دەتەوێت چی بزانیت؟', lede: 'پێش ئەوەی ببیتە دایکێکی جوان و نازدار. هەر بابەتێک کە سەرنجت ڕادەکێشێت هەڵیبژێرە.',
+    html: function(){
+      return '<div class="form">' +
+        fMulti('topics', 'بابەتەکان', TOPICS.map(function(t){ return [t[0], t[1]]; })) +
+        fArea('curiousText', 'شتێکی تر هەیە دەتەوێت بیزانیت؟', { opt: true, ph: 'هەر شتێک لە مێشکتدایە بپرسە' }) +
+      '</div>';
+    }
+  },
+
+  baby: {
+    name: 'منداڵەکەت', title: 'دەربارەی منداڵەکەت پێمان بڵێ', lede: 'پیرۆزە دایکە! با بە منداڵە بچووکەکەت ئاشنا بین.',
+    html: function(){
+      return '<div class="form">' +
+        fText('bName', 'ناوی منداڵەکەت چییە؟', { ph: 'ناوی منداڵ' }) +
+        '<div class="two">' +
+          fText('bDob', 'بەرواری لەدایکبوون', { type: 'date', attrs: 'max="' + iso(today()) + '"' }) +
+          fChoice('bGender', 'ڕەگەز', [['girl','کچ'],['boy','کوڕ']]) +
+        '</div>' +
+        fText('bPlace', 'منداڵەکەت لە کوێ لەدایک بوو؟', { ph: 'نەخۆشخانە، شار' }) +
+        fChoice('delivery', 'چۆن لەدایک بوو؟', [['csection','سیزاریان (C-section)'],['vaginal','لەدایکبوونی سروشتی']]) +
+        '<div class="two">' +
+          fText('bWeight', 'کێشی لەدایکبوون', { type: 'number', unit: 'کگم', ph: 'بۆ نموونە 3.2' }) +
+          fText('bLength', 'درێژیی لەدایکبوون', { type: 'number', unit: 'سم', ph: 'بۆ نموونە 50' }) +
+        '</div>' +
+        '<div class="two">' +
+          fText('bHead', 'چواردەوری سەر لە کاتی لەدایکبووندا', { type: 'number', unit: 'سم', ph: 'بۆ نموونە 34' }) +
+          fSelect('bWeeks', 'لە کاتی لەدایکبووندا چەند هەفتەی سکپڕیت بوو؟', rng(22, 44, function(n){ return n + ' هەفتە'; })) +
+        '</div>' +
+      '</div>';
+    },
+    check: function(){
+      var r = [];
+      if (S.bDob){
+        var d = diffDays(parseD(S.bDob), today());
+        if (d < 0) r.push(['bDob', 'ئەو بەروارە لە داهاتووە. تکایە پشکنینی بکە.']);
+        else if (d > 730) r.push(['bDob', 'ئەمە زیاترە لە دوو ساڵ لەمەوبەر. تکایە بەروارەکە پشکنینی بکە.']);
+      }
+      if (S.bWeight && !(num('bWeight') >= 0.4 && num('bWeight') <= 7)) r.push(['bWeight', 'تکایە کێشەکە بە کیلۆگرام بنووسە، بۆ نموونە 3.2.']);
+      if (S.bLength && !(num('bLength') >= 25 && num('bLength') <= 65)) r.push(['bLength', 'تکایە درێژییەکە بە سانتیمەتر بنووسە، بۆ نموونە 50.']);
+      if (S.bHead && !(num('bHead') >= 20 && num('bHead') <= 45)) r.push(['bHead', 'تکایە قەبارەی سەر بە سانتیمەتر بنووسە، بۆ نموونە 34.']);
+      return r;
+    }
+  },
+
+  birth: {
+    name: 'لەدایکبوون و ڕۆژانی یەکەم', title: 'لەدایکبوون و ڕۆژانی یەکەم', lede: 'ئەم وەڵامانە یارمەتیی پزیشکی منداڵەکەت دەدەن.',
+    html: function(){
+      return '<div class="form">' +
+        fYN('cried', 'ئایا منداڵەکەت دوای لەدایکبوون یەکسەر گریا؟') +
+        fYN('breathed', 'ئایا منداڵەکەت دوای لەدایکبوون بە شێوەیەکی ئاسایی هەناسەی دا؟') +
+        fYN('nicu', 'ئایا منداڵەکەت پێویستی بە خەوتن لە NICU (یەکەی چاودێریی تایبەتیی منداڵی تازە لەدایکبوو) بوو؟') +
+        fMulti('compl', 'ئایا منداڵەکەت لە کاتی لەدایکبوون یان دوای ئەوە هیچ ئاڵۆزییەکی هەبوو؟', [
+          ['breathing','قورسی هەناسەدان'],['sugar','نزمی شەکری خوێن'],['jaundice','زەردووێ'],['infection','هەوکردن'],['other','ئەوانی تر'],['none','هیچ ئاڵۆزییەک نەبوو', true]
+        ], { req: true, hint: 'هەموو ئەوانە هەڵبژێرە کە دەگونجێن.' }) +
+        cond('compl~other', fText('complOther', 'تکایە دەربارەی ئاڵۆزییە تریەکە پێمان بڵێ', { ph: 'بە چەند وشەیەک وەسفی بکە' })) +
+      '</div>';
+    }
+  },
+
+  summary: {
+    name: 'پوختەکەت', title: '', lede: '',
+    html: function(){ return summaryHtml(); }
+  }
+};
+
+function flow(){
+  if (S.status === 'pregnant') return ['personal','preg','obs','medhist','symptoms','summary'];
+  if (S.status === 'planning') return ['personal','prior','cycle','lifestyle','curious','summary'];
+  if (S.status === 'newborn') return ['personal','baby','birth','summary'];
+  return ['personal'];
+}
+
+/* ---------- summary content ---------- */
+function habitNotes(){
+  var n = [], st = S.status;
+  if (yes('smoke')) n.push(note('warn', 'جگەرەکێشان', p(st === 'planning'
+    ? 'وازهێنان پێش ئەوەی سکپڕ بیت یەکێکە لە باشترین کارەکان بۆ منداڵە داهاتووەکەت. نەخۆشخانەکەت دەتوانێت یارمەتیت بدات بۆ وازهێنان.'
+    : st === 'newborn' ? 'دووکەڵ لە دەوری منداڵ مەترسیی هەوکردنی سنگ و مردنی لەناکاوی منداڵ زیاد دەکات. هەرگیز لە ناو ماڵ یان لە نزیک منداڵەکەت جگەرە مەکێشە، و لە نەخۆشخانەکەت داوای یارمەتی بکە بۆ وازهێنان.'
+    : 'جگەرەکێشان مەترسیی لەدایکبوونی پێش وادە و کێشی کەمی لەدایکبوون زیاد دەکات. هەرگیز درەنگ نییە بۆ وازهێنان، و پزیشکەکەت دەتوانێت یارمەتیت بدات.')));
+  if (yes('alcohol')) n.push(note('warn', 'ئەلکوحول', p(st === 'newborn'
+    ? 'ئەلکوحول دەچێتە ناو شیر. لە پزیشکەکەت بپرسە چۆن کاتی شیردانەکان ڕێکبخەیت.'
+    : 'هیچ بڕێکی دڵنیاکەرەوە نییە بۆ ئەلکوحول لە کاتی سکپڕبووندا، و باشترینە پێش دەستپێکردنی هەوڵدانیش وازی لێبهێنیت. پزیشکەکەت دەتوانێت یارمەتیت بدات ئەگەر وازهێنان قورس بوو.')));
+  if (yes('drugs')) n.push(note('warn', 'ماددەی هۆشبەر یان ماددەکانی تر', p('سوپاس بۆ ئەوەی پێت وتین. تکایە بە ڕوونی لەگەڵ پزیشک یان ماما قسە بکە. ئەوان بۆ یارمەتیدانن نەک ڕەخنەگرتن، و هەندێک ماددە پێویستیان بە پشتگیریی پزیشکی هەیە بۆ ئەوەی بە سەلامەتی وازیان لێ بهێنرێت.')));
+  return n.join('');
+}
+
+function weightCard(){
+  var h = num('height'), pre = num('wPre'), now = num('wNow');
+  if (!(h && pre && now)) return '';
+  var b = pre / Math.pow(h / 100, 2), gain = now - pre;
+  var cat = b < 18.5 ? 'under' : b < 25 ? 'normal' : b < 30 ? 'over' : 'obese';
+  var name = { under: 'کێشت کەمە', normal: 'کێشت تەندروستە', over: 'کێشت زیادە', obese: 'لە ڕێژەی قەڵەوییدایت' }[cat];
+  var single = { under: [12.5, 18], normal: [11.5, 16], over: [7, 11.5], obese: [5, 9] };
+  var twin = { normal: [16.8, 24.5], over: [14.1, 22.7], obese: [11.3, 19.1] };
+  var range = S.plural === 'single' ? single[cat] : S.plural === 'twins' ? twin[cat] : null;
+  var g = gain >= 0 ? 'تا ئێستا <b>' + gain.toFixed(1) + ' کگم</b> کێشت زیاد بووە.' : 'کێشت <b>' + Math.abs(gain).toFixed(1) + ' کگم</b> کەمترە لە پێش سکپڕبوون. تکایە بە پزیشکەکەتی بڵێ، بەتایبەتی ئەگەر دڵت تێکچووە.';
+  var r = range ? ' بۆ کێشی دەستپێکی تۆ، کۆی زیادبوونی ئاسایی لە تەواوی سکپڕبووندا <b>' + range[0] + ' بۆ ' + range[1] + ' کگم</b>ـە.' : ' پزیشکەکەت ئامانجێکی زیادبوونی کێش لەگەڵت دیاری دەکات.';
+  return note('info', 'کێشەکەت', p('پێش سکپڕبوون BMIـەکەت <b>' + b.toFixed(1) + '</b> بوو، واتە ' + name + '. ' + g + r) + p('<span class="fine">زیادبوونی کێش بۆ هەر ژنێک جیاوازە. پزیشکەکەت لە هەر سەردانێکدا پێشکەوتنت دەپشکنێت.</span>'));
+}
+
+function pregAlerts(){
+  var out = '', vt = S.vagType || [], urgent = [], warn = [];
+  if (yes('sChest')) urgent.push('ئێشی سنگ، قورسی هەناسەدان یان بێهۆشبوون');
+  if (yes('sVag') && vt.indexOf('bleed') > -1) urgent.push('خوێنبەربوون لە زێ');
+  if (yes('sVag') && vt.indexOf('leak') > -1) urgent.push('دەرچوونی ئاو لە زێ');
+  if (yes('sHeadVis') && yes('sSwell')) urgent.push('سەرئێشە یان لێڵبوونی بینین لەگەڵ ئاوسان');
+  if (urgent.length) out += note('urgent', 'تکایە ئێستا یارمەتیی پزیشکی وەربگرە',
+    p('تۆ باست لە ' + list(urgent) + ' کرد. ئەمانە دەکرێت واتای ئەوە بن کە تۆ یان منداڵەکەت پێویستتان بە بینینی خێرا هەیە. ژمارەی فریاکەوتن بگرە یان بچۆ بۆ نزیکترین نەخۆشخانە.') +
+    '<div><button type="button" class="btn danger" data-act="sos">کردنەوەی پەیوەندیی بەپەلە</button></div>');
+  if (yes('sHeadVis') && !yes('sSwell')) warn.push('سەرئێشە یان لێڵبوونی بینین');
+  if (yes('sSwell') && !yes('sHeadVis')) warn.push('ئاوسانی ڕووخسار یان دەستەکان');
+  if (yes('sAbd')) warn.push('ئێشی سک');
+  if (yes('sFever')) warn.push('تا');
+  if (yes('sBurn')) warn.push('سووتانەوە لە کاتی میزکردن');
+  if (yes('sVag') && vt.indexOf('disch') > -1 && !urgent.length) warn.push('شلەمەنی نائاسایی');
+  if (warn.length) out += note('warn', 'تکایە ئەمڕۆ پەیوەندی بە پزیشک یان ماماکەتەوە بکە',
+    p('تۆ باست لە ' + list(warn) + ' کرد. ئەمانە زۆرجار چارەسەر دەکرێن، بەڵام پێویستە بەزوویی بپشکنرێن، بەتایبەتی چونکە سکپڕیت.'));
+  if (!urgent.length && !warn.length) out += note('good', 'ئەمڕۆ هیچ هێمایەکی مەترسی نییە', p('تۆ هیچ یەکێک لەو هێمایانەی مەترسیت نەگوت کە پرسیارمان کرد. بەردەوام بە لە سەردانە ئاساییەکانت، و ئەگەر هیچ شتێک گۆڕا پەیوەندی بە پزیشکەکەتەوە بکە.'));
+  if (yes('sNausea')) out += note('info', 'دڵتێکەڵان و ڕشانەوە', p('ئەمە زۆر ئاساییە، بەتایبەتی لە مانگەکانی یەکەمدا. خواردنی بچووک و چەندین جار و خواردنەوەی شلە یارمەتیدەرە. ئەگەر 24 کاتژمێر نەتتوانی هیچ خواردن یان خواردنەوەیەک ڕابگریت پەیوەندی بە پزیشکەکەتەوە بکە.'));
+  if (yes('sDigest')) out += note('info', 'هەرسکردن', p('سکپڕبوون هەرسکردن بۆ زۆر ژن هێور دەکات. خواردنی بچووکتر، فایبەری زیاتر و خواردنەوەی ئاو یارمەتیدەرە. ئەگەر هەر بەردەوام بوو لە سەردانی داهاتوودا بیڵێ.'));
+  return out;
+}
+
+function pregSummary(){
+  var g = gaInfo(), tri = ['', 'سێ مانگی یەکەم', 'سێ مانگی دووەم', 'سێ مانگی سێیەم'];
+  var babies = { single: 'یەک منداڵ', twins: 'دووانە', triplets: 'سێانە', unsure: 'هێشتا دڵنیا نیم' }[S.plural] || '';
+  var tiles = '<div class="tiles">' +
+    '<div class="tile"><span>سکپڕبوون</span><b>' + (g ? g.w + ' هەفتە' : '–') + '</b><small>' + (g ? (g.src === 'ultrasound' ? 'لە سۆنارەکەتەوە' : 'و ' + g.d + ' ڕۆژ، مەزەندە لە سووڕی مانگانەکەتەوە') : '') + '</small></div>' +
+    '<div class="tile"><span>قۆناغ</span><b>' + (g ? tri[g.tri] : '–') + '</b></div>' +
+    '<div class="tile"><span>بەرواری منداڵبوون</span><b>' + (g ? fmtD(g.edd) : '–') + '</b><small>نزیکەی، منداڵ کاتێک دێت کە ئامادە بێت</small></div>' +
+    '<div class="tile"><span>منداڵەکان</span><b>' + babies + '</b></div>' +
+  '</div>';
+  var med = [];
+  if (yes('diabetes')) med.push('شەکرە');
+  if (yes('bp')) med.push('بەرزبوونەوەی پەستانی خوێن');
+  if (yes('thyroid')) med.push('نەخۆشیی گلاندی دەرەقی');
+  if (yes('heart')) med.push('نەخۆشیی دڵ');
+  var notes = '';
+  if (med.length) notes += note('info', 'مێژووی پزیشکیت', p('تۆ باست لە ' + list(med) + ' کرد. ئەمانە دەکرێت لە سکپڕبووندا بە باشی کۆنترۆڵ بکرێن، و تیمی چاودێری زۆرجار دەیانەوێت کەمێک زیاتر ببینن. دڵنیابە پزیشکەکەت لێیان ئاگادارە.'));
+  if (yes('allergy') || yes('meds')) notes += note('info', 'هەستیاری و دەرمانەکان', p('لیستێک لە هەستیارییەکان و هەموو ئەو شتانەی بەکاریان دەهێنیت (ڤیتامین و گیای دەرمانیش) بهێنە بۆ هەموو سەردانێک. تکایە دەرمانێکی نووسراو بێ پرسی پزیشک مەوەستێنە.'));
+  if (num('age') >= 35) notes += note('info', 'تەمەنی 35 ساڵ یان زیاتر', p('سکپڕبوون دوای 35 ساڵ زۆر باوە. پزیشکەکەت لەوانەیە چەند پشکنینێکی زیاتر پێشنیار بکات بۆ پاراستنی تۆ و منداڵەکەت.'));
+  if (num('age') < 18) notes += note('info', 'پشتگیریی زیاتر', p('دایکە گەنجەکان بە پشتگیریی زیاتر باشتر دەبن. نەخۆشخانەکەت دەتوانێت بە کەسانێکەوە بتبەستێتەوە کە یارمەتیت دەدەن.'));
+  if (S.plural === 'twins' || S.plural === 'triplets') notes += note('info', 'زیاتر لە یەک منداڵ', p('سکپڕبوونی زیاتر لە یەک منداڵ زۆرجار سۆناری زیاتری دەوێت، و منداڵەکان زۆرجار کەمێک زووتر لەدایک دەبن. پزیشکەکەت پلانی ئەمە لەگەڵت دادەنێت.'));
+  return { head: tiles, body: pregAlerts() + weightCard() + notes + habitNotes() };
+}
+
+function planSummary(){
+  var tiles = '<div class="tiles">' +
+    '<div class="tile"><span>دوایین سووڕی مانگانە</span><b>' + (S.lmp ? fmtD(parseD(S.lmp)) : 'دڵنیا نیم') + '</b></div>' +
+    '<div class="tile"><span>درێژیی سووڕی مانگانە</span><b>' + (S.periodDays ? S.periodDays + ' ڕۆژ' : '–') + '</b></div>' +
+    '<div class="tile"><span>ئەسیدی فۆلیک</span><b>' + (yes('folic') ? 'بەکاری دەهێنیت' : 'هێشتا نا') + '</b></div>' +
+    '<div class="tile"><span>خەو</span><b>' + (S.sleep ? S.sleep + ' کاتژمێر' : '–') + '</b><small>لە ڕۆژێکدا</small></div>' +
+  '</div>';
+  var n = '';
+  if (!yes('folic')) n += note('warn', 'ئێستا ئەسیدی فۆلیک دەست پێبکە', p('هەموو ڕۆژێک 400 مایکرۆگرام (0.4 ملگم) بخۆ، لانیکەم مانگێک پێش هەوڵدان بۆ سکپڕبوون تا هەفتەی 12ی سکپڕبوون. لە پزیشکەکەت بپرسە ئایا پێویستت بە دۆزێکی بەرزتر هەیە.'));
+  else n += note('good', 'کارێکی بەرچاوت کرد لەسەر ئەسیدی فۆلیک', p('هەموو ڕۆژێک بەردەوام بە تا هەفتەی 12ی سکپڕبوون.'));
+  if (S.dx && S.dx !== 'none') n += note('info', 'PCOS یان ئێندۆمیتریۆزیس', p('زۆر ژن کە ئەم نەخۆشییانەیان هەیە سکپڕبوونی تەندروستیان هەیە. باشە <b>پێش</b> ئەوەی دەست بە هەوڵدان بکەیت سەردانی پزیشک بکەیت، بۆ ئەوەی چارەسەر و کات پێکەوە پلان بۆ دابنرێن.'));
+  if (yes('late')) n += note('info', 'سووڕی مانگانەی دواکەوتوو یان ناڕێک', p('ئەمە دەکرێت زانینی کاتی هێلکەکردنت قورستر بکات. تۆمارکردنی سووڕەکەت بۆ چەند مانگێک یارمەتیدەرە، و پزیشکەکەت دەتوانێت هۆکارەکان وەک PCOS یان کێشەی گلاندی دەرەقی بپشکنێت.'));
+  if (yes('painful')) n += note('info', 'ئازاری سەختی سووڕی مانگانە', p('ئازاری سەخت شتێک نییە کە پێویست بێت ڕای بێنیت. دەکرێت نیشانەی ئێندۆمیتریۆزیس بێت، بۆیە تکایە بە پزیشکەکەتی بڵێ.'));
+  if (num('sleep') && num('sleep') < 6) n += note('info', 'خەو', p('زۆربەی گەورەکان پێویستیان بە 7 بۆ 9 کاتژمێر خەوە. خەوی باشتر پشتگیریی هۆرمۆنەکان، باری دەروونی و توانای منداڵبوون دەکات.'));
+  if (S.active === 'no') n += note('info', 'جووڵەی زیاتر', p('پیاسەیەکی خێرای 20 بۆ 30 خولەکی لە زۆربەی ڕۆژاندا شوێنێکی نەرمە بۆ دەستپێکردن.'));
+  if (num('age') >= 35) n += note('info', 'پلاندانان دوای 35 ساڵ', p('ئەگەر 6 مانگ هەوڵت داوە و سەرکەوتوو نەبوویت، باشترە سەردانی پزیشک بکەیت نەک ساڵێکی تەواو چاوەڕێ بکەیت.'));
+  if (S.ready === 'unsure' || S.ready === 'no' || S.support === 'no') n += note('good', 'تۆ زۆر باش دەکەیت', p('ویستنی ئامادەبوون پێش دایکبوون نیشانەی ئەو خۆشەویستییەیە کە پێشتر هەتە. لەگەڵ کەسێک کە متمانەت پێیەتی یان پزیشکەکەت قسە بکە دەربارەی ئەوەی هەستت چۆنە. پێویست ناکات بە تەنیا ئەمە بکەیت.'));
+  n += habitNotes();
+  var tops = (S.topics || []).map(function(id){ return TOPICS.filter(function(t){ return t[0] === id; })[0]; }).filter(Boolean);
+  var tp = '';
+  if (tops.length || S.curiousText){
+    tp = '<div class="stack"><h2 class="sec-title">ئەوەی دەتویست بیزانیت</h2>' +
+      tops.map(function(t){ return note('info', t[1], p(t[2])); }).join('') +
+      (S.curiousText ? note('info', 'پرسیارەکەت', p(esc(S.curiousText)) + p('<span class="fine">ئەمە بهێنە بۆ پزیشک یان ماماکەت. ئەوان باشترین کەسن بۆ وەڵامدانەوەی.</span>')) : '') + '</div>';
+  }
+  return { head: tiles, body: n + tp };
+}
+
+function babySummary(){
+  var dob = S.bDob ? parseD(S.bDob) : null, age = dob ? diffDays(dob, today()) : null;
+  var ageTxt = age == null ? '–' : age < 14 ? age + ' ڕۆژ' : age < 60 ? Math.floor(age / 7) + ' هەفتە' : Math.floor(age / 30.4) + ' مانگ';
+  var w = +S.bWeeks, term = !w ? '' : w < 28 ? 'زۆر زۆر پێش وادە' : w < 32 ? 'زۆر پێش وادە' : w < 37 ? 'پێش وادە' : w < 39 ? 'نزیک بە وادە' : w < 41 ? 'وادەی تەواو' : w < 42 ? 'درەنگی وادە' : 'دوای وادە';
+  var bw = num('bWeight'), bwNote = bw < 1.5 ? 'کێشی زۆر کەمی لەدایکبوون' : bw < 2.5 ? 'کێشی کەمی لەدایکبوون' : bw >= 4 ? 'لە ئاستی ئاسایی گەورەتر' : 'کێشی ئاسایی لەدایکبوون';
+  var tiles = '<div class="tiles">' +
+    '<div class="tile"><span>تەمەن</span><b>' + ageTxt + '</b><small>' + (dob ? 'لەدایکبوو لە ' + fmtD(dob) : '') + '</small></div>' +
+    '<div class="tile"><span>لەدایکبوو لە</span><b>' + (S.bWeeks || '–') + ' هەفتە</b><small>' + term + '</small></div>' +
+    '<div class="tile"><span>کێشی لەدایکبوون</span><b>' + (bw ? bw.toFixed(2) + ' کگم' : '–') + '</b><small>' + (bw ? bwNote : '') + '</small></div>' +
+    '<div class="tile"><span>شێوازی لەدایکبوون</span><b>' + (S.delivery === 'csection' ? 'سیزاریان' : 'سروشتی') + '</b></div>' +
+  '</div>';
+  var c = S.compl || [], n = '';
+  var cm = { breathing: 'قورسی هەناسەدان', sugar: 'نزمی شەکری خوێن', jaundice: 'زەردووێ', infection: 'هەوکردن', other: S.complOther ? esc(S.complOther) : 'ئاڵۆزییەکی تر' };
+  var real = c.filter(function(x){ return x !== 'none'; });
+  if (real.length) n += note('warn', 'شوێنکەوتن گرنگە', p('منداڵەکەت ' + list(real.map(function(x){ return cm[x]; })) + ' هەبووە. سەردانەکانی شوێنکەوتن لەگەڵ پزیشکی منداڵەکەت جێبەجێ بکە و لە هەر سەردانێکدا ئەم وردەکارییانەی پێ بڵێ.'));
+  else n += note('good', 'دەستپێکێکی ئاسان', p('پێت وتین هیچ ئاڵۆزییەک نەبووە. بەردەوام بە لە پشکنینە ئاساییەکانی منداڵی تازە لەدایکبوو و کوتانەکان.'));
+  if (c.indexOf('jaundice') > -1) n += note('info', 'چاودێریکردنی زەردووێ', p('پێست و سپییەکەی چاوی منداڵەکەت لە ڕووناکیی ڕۆژدا ببینە. ئەگەر ڕەنگی زەرد بڵاو بووەوە یان قووڵتر بوو، یان منداڵەکە زۆر خەواڵوو بوو و بە باشی شیر نەخوات، هەمان ڕۆژ سەردانی پزیشک بکە.'));
+  if (yes('nicu') || S.breathed === 'no' || S.cried === 'no') n += note('info', 'ساتە یەکەمەکان', p('لەبەر ئەوەی منداڵەکەت لە سەرەتادا پێویستی بە یارمەتیی زیاتر بوو، لە پزیشکەکە بپرسە کام پشکنینەکان و پێداچوونەوەکانی بیستن، بینین یان گەشەکردن پێویستە منداڵەکەت ئەنجامیان بدات.'));
+  n += note('urgent', 'ئەگەر منداڵەکەت ئەمانەی هەبوو، یەکسەر سەردانی پزیشک بکە',
+    '<ul><li>تای 38 پلە یان زیاتری هەبوو، یان زۆر سارد بوو</li><li>بە خێرایی، بە دەنگ یان بە سەختی هەناسە دەدات</li><li>شیر ناخوات، یان زۆر خەواڵوو یان شل و بێ هێزە</li><li>زەرد، شین یان زۆر ڕەنگ پەڕیو بوو</li></ul>' +
+    '<div><button type="button" class="btn danger" data-act="sos">کردنەوەی پەیوەندیی بەپەلە</button></div>');
+  n += note('info', 'دایکە گیان، تۆش', p('هەرکاتێک دەتوانیت پشوو بدە، باش بخۆ، و ئاو بخۆرەوە، بەتایبەتی ئەگەر شیر دەدەیت. ئەگەر خوێنبەربوونی زۆر، تا، سەرئێشەی سەخت، ئێشی سنگ هەبوو، یان بۆ زیاتر لە چەند هەفتەیەک هەستت بە خەمۆکی یان دڵەڕاوکێیەکی زۆر کرد، پەیوەندی بە پزیشکەکەتەوە بکە.'));
+  n += habitNotes();
+  return { head: tiles, body: n };
+}
+
+function answerRows(){
+  var L = {
+    status: { pregnant: 'سکپڕە', planning: 'پلان دادەنێت بۆ سکپڕبوون', newborn: 'منداڵی تازەی هەیە' },
+    plural: { single: 'تاکە منداڵ', twins: 'دووانە', triplets: 'سێانە', unsure: 'هێشتا دڵنیا نیم' },
+    active: { no: 'زۆر نا', some: 'هەندێک جار', yes: 'بەڵێ' },
+    ready: { yes: 'بەڵێ', unsure: 'دڵنیا نیم', no: 'هێشتا نا' },
+    dx: { none: 'نەخێر', pcos: 'PCOS', endo: 'ئێندۆمیتریۆزیس', both: 'PCOS و ئێندۆمیتریۆزیس' },
+    dtype: { t1: 'جۆری 1', t2: 'جۆری 2', gdm: 'شەکرەی سکپڕی', unsure: 'دڵنیا نیم' },
+    bpw: { before: 'پێش سکپڕبوون', during: 'لە کاتی سکپڕبووندا', unsure: 'دڵنیا نیم' },
+    compl: { breathing: 'قورسی هەناسەدان', sugar: 'نزمی شەکری خوێن', jaundice: 'زەردووێ', infection: 'هەوکردن', other: 'ئەوانی تر', none: 'هیچ ئاڵۆزییەک نەبوو' }
+  };
+  var rows = [];
+  var add = function(label, v){ if (v !== '' && v != null && v !== 'NaN') rows.push([label, v]); };
+  add('ناو', esc(S.name)); add('تەمەن', S.age); add('خەڵکی', esc(S.from)); add('باڵا', S.height && S.height + ' سم');
+  add('قۆناغ', L.status[S.status]);
+  add('کێشی پێش سکپڕبوون', S.wPre && S.status !== 'planning' && S.wPre + ' کگم'); add('کێشی ئێستا', S.wNow && S.wNow + ' کگم');
+  add('جگەرەکێش', yn('smoke')); add('ئەلکوحول', yn('alcohol')); add('ماددەی هۆشبەر یان ماددەی تر', yn('drugs'));
+  if (S.status === 'pregnant'){
+    add('دوایین سووڕی مانگانە', S.lmp && fmtD(parseD(S.lmp))); add('سۆنار', yn('ultra'));
+    if (S.ultra === 'yes') add('سۆنار تەمەنی سکی دووپات کردووەتەوە', S.ultraConf === 'yes' ? 'بەڵێ، ' + S.gaWeeks + ' هەفتە' : yn('ultraConf'));
+    add('منداڵەکان', L.plural[S.plural]); add('گراڤیدا', S.gravida); add('پارا', S.para);
+    add('شەکرە', yes('diabetes') ? 'بەڵێ' + (S.diabetesType ? ' (' + L.dtype[S.diabetesType] + ')' : '') : yn('diabetes'));
+    add('پەستانی خوێنی بەرز', yes('bp') ? 'بەڵێ' + (S.bpWhen ? ' (' + L.bpw[S.bpWhen] + ')' : '') : yn('bp'));
+    add('نەخۆشیی گلاندی دەرەقی', yn('thyroid')); add('نەخۆشیی دڵ', yn('heart'));
+    add('هەستیاری', yes('allergy') ? 'بەڵێ: ' + esc(S.allergyWhat) : yn('allergy'));
+    add('دەرمانی ئێستا', yes('meds') ? 'بەڵێ: ' + esc(S.medsWhat) : yn('meds'));
+    add('نەخۆشییەکانی تر', esc(S.otherChronic));
+    SYMP.forEach(function(s){ add(s[1].replace(/؟$/, ''), yn(s[0])); });
+    if (yes('sVag')) add('نیشانەکانی زێ', (S.vagType || []).map(function(x){ return { bleed: 'خوێنبەربوون', leak: 'دەرچوونی ئاو', disch: 'شلەمەنی' }[x]; }).join('، '));
+  } else if (S.status === 'planning'){
+    add('پێشتر سکپڕ بووە', yn('prior'));
+    if (yes('prior')){ add('گراڤیدا', S.gravida); add('پارا', S.para); }
+    add('دوایین سووڕی مانگانە', S.lmp && fmtD(parseD(S.lmp))); add('درێژیی سووڕی مانگانە', S.periodDays && S.periodDays + ' ڕۆژ');
+    add('دواکەوتن یان ناڕێکی', yn('late')); add('ئازاری سەختی سووڕی مانگانە', yn('painful')); add('PCOS یان ئێندۆمیتریۆزیس', L.dx[S.dx]);
+    if (S.dx && S.dx !== 'none'){ add('دەرمان بەکاردەهێنێت', yn('dxMeds')); add('دەرمان', esc(S.dxMedsWhat)); }
+    add('ئەسیدی فۆلیک', yn('folic')); add('چالاکی جەستەیی', L.active[S.active]); add('خەو', S.sleep && S.sleep + ' کاتژمێر');
+    add('ئامادەیی هەستی', L.ready[S.ready]); add('پشتگیریی خێزان یان هاوسەر', yn('support'));
+    add('پرسیارەکەت', esc(S.curiousText));
+  } else if (S.status === 'newborn'){
+    add('ناوی منداڵ', esc(S.bName)); add('بەرواری لەدایکبوون', S.bDob && fmtD(parseD(S.bDob))); add('ڕەگەز', S.bGender && (S.bGender === 'girl' ? 'کچ' : 'کوڕ'));
+    add('شوێنی لەدایکبوون', esc(S.bPlace)); add('شێوازی لەدایکبوون', S.delivery && (S.delivery === 'csection' ? 'سیزاریان' : 'سروشتی'));
+    add('کێشی لەدایکبوون', S.bWeight && S.bWeight + ' کگم'); add('درێژیی لەدایکبوون', S.bLength && S.bLength + ' سم'); add('چواردەوری سەر', S.bHead && S.bHead + ' سم');
+    add('هەفتەکانی سکپڕبوون لە کاتی لەدایکبوون', S.bWeeks); add('یەکسەر گریا', yn('cried')); add('بە ئاسایی هەناسەی دا', yn('breathed')); add('NICU', yn('nicu'));
+    add('ئاڵۆزییەکان', (S.compl || []).map(function(x){ return L.compl[x]; }).join('، ')); add('ئاڵۆزیی تر', esc(S.complOther));
+  }
+  return rows;
+}
+
+function summaryHtml(){
+  var s = S.status === 'pregnant' ? pregSummary() : S.status === 'planning' ? planSummary() : babySummary();
+  var who = esc(S.name || 'دایکە گیان');
+  var title = S.status === 'newborn' && S.bName ? 'بەخێربێیت بۆ جیهان، ' + esc(S.bName) + '.' : 'سوپاس، ' + who + '.';
+  var sub = S.status === 'pregnant' ? 'ئەمە وێنەیەکی خێرایە لە سکپڕبوونەکەت. تکایە لەگەڵ پزیشک یان ماماکەت دابەشی بکە.'
+          : S.status === 'planning' ? 'ئەمە خاڵی دەستپێکی تایبەتی تۆیە بۆ ڕێگای دایکبوون.'
+          : 'ئەمە پوختەیەکە لە لەدایکبوونی منداڵەکەت و چەند شتێک کە لەبیرت بێت.';
+  return '<div class="head"><h1 tabindex="-1">' + title + '</h1><p class="lede">' + sub + '</p></div>' +
+    s.head + '<div class="stack">' + s.body + '</div>' +
+    '<details class="answers"><summary>هەموو وەڵامەکانت ببینە</summary><dl>' + answerRows().map(function(r){ return '<div class="r"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>'; }).join('') + '</dl></details>' +
+    '<p class="fine">ئەمە ڕێنمایییە نەک دەستنیشانکردنی نەخۆشی، و جێگەی سەردانی پزیشک یان ماما ناگرێتەوە. هیچ شتێک کە نووسیت لەم وەشانە تاقیکارییەدا نەنێردرا و پاشەکەوت نەکرا.</p>';
+}
+
+/* ---------- rendering ---------- */
+function test(expr){
+  return expr.split('&').every(function(part){
+    if (part.indexOf('~') > -1){ var c = part.split('~'); return (S[c[0]] || []).indexOf(c[1]) > -1; }
+    var a = part.split('='); return a[1].split('|').indexOf(String(S[a[0]] == null ? '' : S[a[0]])) > -1;
+  });
+}
+function applyIf(){
+  stage.querySelectorAll('[data-if]').forEach(function(e){ e.hidden = !test(e.dataset.if); });
+}
+function updateLive(){
+  var el = stage.querySelector('[data-live="ga"]');
+  if (el) el.innerHTML = gaText();
+}
+function updateProgress(){
+  var prog = document.getElementById('prog');
+  if (cur === 'welcome'){ prog.hidden = true; return; }
+  prog.hidden = false;
+  var f = flow(), i = Math.max(0, f.indexOf(cur)), total = S.status ? f.length : 5;
+  document.getElementById('progStep').textContent = 'هەنگاوی ' + (i + 1) + ' لە ' + total;
+  document.getElementById('progName').textContent = STEPS[cur].name;
+  document.getElementById('bar').style.width = Math.round(((i + 1) / total) * 100) + '%';
+}
+
+function welcomeHtml(){
+  return '<section class="card hero">' +
+    '<svg class="bloom" viewBox="0 0 48 48" aria-hidden="true"><g fill="currentColor"><ellipse cx="24" cy="12" rx="6" ry="10" opacity=".35"/><ellipse cx="24" cy="12" rx="6" ry="10" opacity=".35" transform="rotate(72 24 24)"/><ellipse cx="24" cy="12" rx="6" ry="10" opacity=".35" transform="rotate(144 24 24)"/><ellipse cx="24" cy="12" rx="6" ry="10" opacity=".35" transform="rotate(216 24 24)"/><ellipse cx="24" cy="12" rx="6" ry="10" opacity=".35" transform="rotate(288 24 24)"/><circle cx="24" cy="24" r="5.5"/></g></svg>' +
+    '<h1 tabindex="-1">بەخێربێیت، دایکی نازدار.</h1>' +
+    '<p class="lede">چەند پرسیارێکی نەرمونیان بۆ ئەوەی بزانین لە چ قۆناغێکی گەشتەکەتدایت. نزیکەی پێنج خولەک دەخایەنێت.</p>' +
+    '<div class="paths">' +
+      '<div><b>چاوەڕوانی منداڵ</b><span>ببینە چەند هەفتەی سکپڕیت و نیشانەکانی مەترسی بە زوویی بناسەوە.</span></div>' +
+      '<div><b>پلان بۆ سکپڕبوون</b><span>ئامادە ببە بۆ سکپڕبوون بە خاڵی دەستپێکێکی ڕوون.</span></div>' +
+      '<div><b>منداڵی تازە</b><span>لەدایکبوونەکە تۆمار بکە و بزانە چی بە ئاگاوە بیت.</span></div>' +
+    '</div>' +
+    '<p class="privacy">ئەمە وەشانێکی تاقیکردنەوەیە. هیچ شتێک کە دەینووسیت نانێردرێت و هیچ شوێنێک پاشەکەوت ناکرێت. ئەگەر هەرکات هەستت بە مەترسی کرد، دوگمە سورەکەی «پەیوەندیی بەپەلە» لە خوارەوەی لای ڕاست دابگرە.</p>' +
+    '<div class="nav"><button type="button" class="btn primary" data-act="start">دەست پێبکە</button></div>' +
+  '</section>';
+}
+
+function go(id){
+  cur = id;
+  if (id === 'welcome'){
+    stage.innerHTML = welcomeHtml();
+  } else {
+    var st = STEPS[id], last = id === 'summary';
+    var head = last ? '' : '<div class="head"><h1 tabindex="-1">' + st.title + '</h1><p class="lede">' + st.lede + '</p></div>';
+    var nav = last
+      ? '<div class="nav"><button type="button" class="btn ghost" data-act="back">گەڕانەوە</button><button type="button" class="btn primary" data-act="restart">دووبارە دەستپێبکەرەوە</button></div>'
+      : '<div class="nav"><button type="button" class="btn ghost" data-act="back">گەڕانەوە</button><button type="button" class="btn primary" data-act="next">' + (flow().indexOf(id) === flow().length - 2 ? 'پوختەکەم ببینە' : 'دواتر') + '</button></div>';
+    stage.innerHTML = '<section class="card">' + head + st.html() + nav + '</section>';
+  }
+  applyIf(); updateLive(); updateProgress();
+  window.scrollTo(0, 0);
+  var h = stage.querySelector('h1'); if (h) h.focus({ preventScroll: true });
+}
+
+function validate(st){
+  var first = null;
+  stage.querySelectorAll('.field.err').forEach(function(f){ f.classList.remove('err'); var m = f.querySelector('.msg'); if (m) m.textContent = ''; });
+  var bad = function(f, msg){ f.classList.add('err'); f.querySelector('.msg').textContent = msg; if (!first) first = f; };
+  stage.querySelectorAll('.field[data-req]').forEach(function(f){
+    if (f.closest('[hidden]')) return;
+    var v = S[f.dataset.field];
+    if (v == null || v === '' || (Array.isArray(v) && !v.length)) bad(f, REQ_MSG);
+  });
+  (st.check ? st.check() : []).forEach(function(c){
+    var f = stage.querySelector('.field[data-field="' + c[0] + '"]');
+    if (f && !f.classList.contains('err')) bad(f, c[1]);
+  });
+  if (first){ first.scrollIntoView({ behavior: 'smooth', block: 'center' }); return false; }
+  return true;
+}
+function next(){
+  if (!validate(STEPS[cur])) return;
+  var f = flow(); go(f[f.indexOf(cur) + 1]);
+}
+function back(){
+  var f = flow(), i = f.indexOf(cur); go(i > 0 ? f[i - 1] : 'welcome');
+}
+
+/* ---------- modals ---------- */
+function openModal(html){
+  modal.innerHTML = '<div class="modal" role="dialog" aria-modal="true">' + html + '</div>';
+  modal.hidden = false;
+  var b = modal.querySelector('[data-act="close"]'); if (b) b.focus();
+}
+function closeModal(){ modal.hidden = true; modal.innerHTML = ''; }
+function showSos(){
+  openModal(
+    '<h2>پەیوەندیی بەپەلە</h2>' +
+    '<p>ئەگەر تۆ یان منداڵەکەت لە مەترسیدان، ئێستا پەیوەندی بکە.</p>' +
+    '<div class="bignum" id="sosNum">' + esc(EMERGENCY_NUMBER) + '</div>' +
+    '<div class="actions"><a class="btn danger" href="tel:' + esc(EMERGENCY_NUMBER) + '">پەیوەندی بکە بە ' + esc(EMERGENCY_NUMBER) + '</a><button type="button" class="btn ghost" data-act="copy">کۆپیکردنی ژمارە</button></div>' +
+    '<p class="fine" id="sosMsg">ئەگەر ئەم ئامێرە ناتوانێت پەیوەندی بکات، لەم ژمارەیە لە مۆبایلێکەوە پەیوەندی بکە.</p>' +
+    '<p><b>ئەگەر ئەمانەت هەبوو یەکسەر پەیوەندی بکە:</b></p>' +
+    '<ul><li>خوێنبەربوونی زۆر لە زێ یان دەرچوونی ئاو</li><li>ئێشی سەختی سک یان ئازارەکانی لەدایکبوون کە نایەستن</li><li>ئێشی سنگ، قورسی هەناسەدان یان بێهۆشبوون</li><li>سەرئێشەی سەخت لەگەڵ لێڵبوونی بینین یان ئاوسان</li><li>تەشەنج (سەرع)، یان منداڵەکەت زۆر کەمتر دەجووڵێت</li><li>منداڵێکی تازە لەدایکبوو کە بە باشی هەناسە نادات، شیر ناخوات یان تای هەیە</li></ul>' +
+    '<button type="button" class="btn ghost" data-act="close">داخستن</button>');
+}
+function showSupport(){
+  openModal(
+    '<svg class="heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' +
+    '<h2>تۆ بە تەنیا نیت، دایکە گیان.</h2>' +
+    '<p>نەبوونی پشتگیری لە نزیکەوە دەکرێت قورس بێت، و ئەوە ئاساییە. ئەو خۆشەویستییەی لە دڵتدایە هەر ئەوەیە کە منداڵێک پێویستی پێیەتی. زۆر دایکی بەهێز لە هەمان شوێنەوە دەستیان پێکرد کە ئێستا تۆ لێی دەستپێدەکەیت.</p>' +
+    '<ul><li>پەیوەندی بکە بە یەک کەسی متمانەپێکراو، وەک هاوڕێ، دراوسێ، خاڵۆزا یان پەرستارێک.</li><li>بە نەخۆشخانەکەت بڵێ. پزیشک و ماماکان دەتوانن بە پشتگیریی ناوچەییەوە بتبەستنەوە.</li><li>بەدوای گرووپی دایکانی ناوچەییدا بگەڕێ، بۆ ئەوەی ڕۆژە خۆشەکان و سەختەکان بەش بکەیت.</li></ul>' +
+    '<p>تۆ شایەنی چاودێری و میهرەبانیتیت، ئەمڕۆ و هەموو ڕۆژێک.</p>' +
+    '<button type="button" class="btn primary" data-act="close">سوپاس، بەردەوام بە</button>');
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', function(e){
+  if (e.target === modal){ closeModal(); return; }
+  var b = e.target.closest('[data-act]'); if (!b) return;
+  var a = b.dataset.act;
+  if (a === 'start') go('personal');
+  else if (a === 'next') next();
+  else if (a === 'back') back();
+  else if (a === 'restart'){ Object.keys(S).forEach(function(k){ delete S[k]; }); go('welcome'); }
+  else if (a === 'sos') showSos();
+  else if (a === 'close') closeModal();
+  else if (a === 'copy'){
+    var done = function(ok){ var m = document.getElementById('sosMsg'); if (m) m.textContent = ok ? 'ژمارەکە کۆپی کرا.' : 'پەنجەت لەسەر ژمارەکە ڕابگرە بۆ کۆپیکردن.'; };
+    try { navigator.clipboard.writeText(EMERGENCY_NUMBER).then(function(){ done(true); }, function(){ done(false); }); } catch (err) { done(false); }
+  }
+});
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+
+function changed(k){
+  var f = stage.querySelector('.field[data-field="' + k + '"]');
+  if (f){ f.classList.remove('err'); var m = f.querySelector('.msg'); if (m) m.textContent = ''; }
+  applyIf(); updateLive();
+  if (k === 'support' && S.support === 'no') showSupport();
+  if (k === 'status') updateProgress();
+}
+stage.addEventListener('input', function(e){
+  var t = e.target, k = t.dataset.k;
+  if (!k || t.type === 'radio' || t.type === 'checkbox' || t.tagName === 'SELECT') return;
+  S[k] = t.value; changed(k);
+});
+stage.addEventListener('change', function(e){
+  var t = e.target, k = t.dataset.k; if (!k) return;
+  if (t.type === 'checkbox'){
+    var arr = S[k] || [];
+    var boxes = stage.querySelectorAll('input[data-k="' + k + '"]');
+    if (t.checked){
+      if (t.dataset.excl){
+        arr = [t.value];
+        boxes.forEach(function(x){ if (x !== t) x.checked = false; });
+      } else {
+        boxes.forEach(function(x){ if (x.dataset.excl){ x.checked = false; arr = arr.filter(function(v){ return v !== x.value; }); } });
+        arr = arr.concat(t.value);
+      }
+    } else {
+      arr = arr.filter(function(v){ return v !== t.value; });
+    }
+    S[k] = arr;
+  } else if (t.type === 'radio' || t.tagName === 'SELECT'){
+    S[k] = t.value;
+  } else return;
+  changed(k);
+});
+
+go('welcome');
+})();
+</script>
+
+</body>
+</html>
